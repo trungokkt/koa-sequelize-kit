@@ -1,7 +1,7 @@
 let service = {};
 let models = require("../models");
 let Todo = models.todo;
-let User = models.user;
+let TodoHistory = models.todoHistory;
 
 service.getAll = async () => {
     const todos = await Todo.findAll();
@@ -12,22 +12,22 @@ service.getById = async (id) => {
         where: {
             id: id
         },
-        include: User
+        include: TodoHistory
     });
     return todo;
 };
-service.createTodo = async (name, user_id) => {
-    const todo = await Todo.create({ name: name, user_id: user_id });
+service.createTodo = async (name, description) => {
+    const todo = await Todo.create({ name: name, description: description });
     return todo;
 };
 service.updateTodo = async (data) => {
     let todo = await Todo.findByPk(data.id);
     if (!todo) {
-        return []
+        return 0
     }
     todo = await todo.update({
         name: data.name,
-        process: data.process
+        description: data.description,
     })
     // const todo = await Todo.update(
     //     { name: data.name },
@@ -40,14 +40,11 @@ service.updateTodo = async (data) => {
     return todo;
 };
 service.deleteTodo = async (id) => {
-    const todo = await Todo.destroy({
-        where: {
-            id: id,
-        },
-        returning: true,
-        plain: true
-
-    });
+    let todo = await Todo.findByPk(id);
+    if (!todo) {
+        return 0
+    }
+    await todo.destroy();
     return todo;
 };
 module.exports = service;

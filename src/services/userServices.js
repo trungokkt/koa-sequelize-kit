@@ -29,8 +29,7 @@ service.deleteUser = async (id) => {
     const user = await User.destroy({
         where: {
             id: id,
-        },
-        returning: true,
+        }
     });
     return user;
 };

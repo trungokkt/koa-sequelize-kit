@@ -4,17 +4,16 @@ module.exports = (sequelize ,DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        status: {
+        description: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        completed: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
-            defaultValue: true
+            defaultValue: false
         },
-        process: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            defaultValue: 0
-        },
-        endAt: {
+        completeDate: {
             type: DataTypes.DATE,
             allowNull: true,
         },
@@ -26,11 +25,11 @@ module.exports = (sequelize ,DataTypes) => {
             type: DataTypes.DATE,
          },
     },{
+        tableName: 'todos',
         hooks : {
             beforeUpdate : (todo, options) => {
-                if(todo.process >= 100){
-                    todo.process = 100
-                    todo.endAt = new Date()
+                if(todo.completed ==true){
+                    todo.completeDate = new Date()
                 }
             }
         }
