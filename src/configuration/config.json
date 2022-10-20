@@ -1,0 +1,15 @@
+
+{
+  "HOST": "ec2-44-207-253-50.compute-1.amazonaws.com",
+  "USER": "zkjtcewmiufjvr",
+  "PASSWORD": "659546b406f0859cef687794c669b545352bc3ac338e5b349c79869be5104b06",
+  "DB": "d63bv9nq1anf31",
+  "dialect": "postgres",
+  "pool": {
+    "max": 5,
+    "min": 0,
+    "acquire": 30000,
+    "idle": 10000
+  }
+}
+
