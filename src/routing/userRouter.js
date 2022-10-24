@@ -1,29 +1,59 @@
 const Router = require('koa-router')
-const router = Router({ prefix: '/users'})
+const router = Router({ prefix: '/users' })
 const userService = require("../services/userServices")
 
 router.get("/", async (ctx, next) => {
-    const users = await userService.getAll()
-    ctx.body = users
+    try {
+        const users = await userService.getAll()
+        ctx.body = users
+    } catch (error) {
+        ctx.throw(error.code , error.message);
+    }
+
 });
 router.get("/:id", async (ctx, next) => {
-    const user = await userService.getByPK(ctx.params.id)
-    ctx.body = user
+    try {
+        const user = await userService.getByPK(ctx.params.id)
+        ctx.body = user
+    } catch (error) {
+        ctx.throw(error.code , error.message);
+    }
 });
 router.post("/", async (ctx, next) => {
-    const name = ctx.request.body.name
-    const user = await userService.createUser(name)
-    ctx.body = user
+    try {
+        const name = ctx.request.body.name
+        if (!name) {
+            ctx.status = 400
+            throw new Error("name cannot be null")
+        }
+        const user = await userService.createUser(name)
+        ctx.body = user
+    } catch (error) {
+        ctx.throw(error.code , error.message);
+    }
 });
 router.put("/", async (ctx, next) => {
-    const user = ctx.request.body
-    const u = await userService.updateUser(user)
-    ctx.body = u
+    try {
+        const user = ctx.request.body
+        if(!user || !user.name || !user.id){
+            const error = new Error("input is not true")
+            error.code = 400
+            throw error
+        }
+        const u = await userService.updateUser(user)
+        ctx.body = u
+    } catch (error) {
+        ctx.throw(error.code , error.message);
+    }
 });
-router.delete("/", async (ctx, next) => {
-    const id = ctx.request.body.id
-    const user = await userService.deleteUser(id)
-    ctx.body = user
+router.delete("/:id", async (ctx, next) => {
+    try {
+        const id = ctx.params.id
+        const user = await userService.deleteUser(id)
+        ctx.body = user
+    } catch (error) {
+        ctx.throw(error.code , error.message);
+    }
 });
 
 module.exports = router

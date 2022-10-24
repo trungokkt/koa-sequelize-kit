@@ -1,15 +1,24 @@
-
 {
-  "HOST": "localhost",
-  "USER": "postgres",
-  "PASSWORD": "mysecretpassword",
-  "DB": "QLCV",
-  "dialect": "postgres",
-  "pool": {
-    "max": 5,
-    "min": 0,
-    "acquire": 30000,
-    "idle": 10000
+  "development": {
+    "username": "postgres",
+    "password": "mysecretpassword",
+    "database": "database_development",
+    "host": "localhost",
+    "dialect": "postgres",
+    "logging": true
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
   }
 }
-

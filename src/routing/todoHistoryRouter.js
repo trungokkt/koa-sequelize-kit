@@ -3,8 +3,12 @@ const router = Router({ prefix: '/history'})
 const todoHistoryService = require("../services/todoHistoryService")
 
 router.get("/", async (ctx, next) => {
-    const history = await todoHistoryService.getAll()
-    ctx.body = history
+    try {
+        const history = await todoHistoryService.getAll()
+        ctx.body = history
+    } catch (error) {
+        next(error)
+    }
 });
 router.get("/:id", async (ctx, next) => {
     const history = await todoHistoryService.getById(ctx.params.id)
@@ -21,7 +25,7 @@ router.put("/", async (ctx, next) => {
     ctx.body = todo
 });
 router.delete("/", async (ctx, next) => {
-    const id = ctx.request.body.id
+    const id = ctx.params.id
     const todo = await todoHistoryService.deleteTodoHistory(id)
     ctx.body = todo
 });
