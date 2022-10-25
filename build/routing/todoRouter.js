@@ -6,29 +6,49 @@ const router = Router({
 });
 const todoService = require("../services/todosService");
 router.get("/", async (ctx, next) => {
-  const todos = await todoService.getAll();
-  ctx.body = todos;
+  try {
+    const todos = await todoService.getAll();
+    ctx.body = todos;
+  } catch (error) {
+    ctx.throw(error.code, error.message);
+  }
 });
 router.get("/:id", async (ctx, next) => {
-  const todo = await todoService.getById(ctx.params.id);
-  ctx.body = todo;
+  try {
+    const todo = await todoService.getById(ctx.params.id);
+    ctx.body = todo;
+  } catch (error) {
+    ctx.throw(error.code, error.message);
+  }
 });
 router.post("/", async (ctx, next) => {
-  const {
-    name,
-    description
-  } = ctx.request.body;
-  const todo = await todoService.createTodo(name, description);
-  ctx.body = todo;
+  try {
+    const {
+      name,
+      description
+    } = ctx.request.body;
+    const todo = await todoService.createTodo(name, description);
+    ctx.body = todo;
+  } catch (error) {
+    ctx.throw(error.code, error.message);
+  }
 });
 router.put("/", async (ctx, next) => {
-  const data = ctx.request.body;
-  const todo = await todoService.updateTodo(data);
-  ctx.body = todo;
+  try {
+    const data = ctx.request.body;
+    const todo = await todoService.updateTodo(data);
+    ctx.body = todo;
+  } catch (error) {
+    ctx.throw(error.code, error.message);
+  }
 });
-router.delete("/", async (ctx, next) => {
-  const id = ctx.request.body.id;
-  const todo = await todoService.deleteTodo(id);
-  ctx.body = todo;
+router.delete("/:id", async (ctx, next) => {
+  try {
+    const id = ctx.params.id;
+    const todo = await todoService.deleteTodo(id);
+    ctx.body = todo;
+  } catch (error) {
+    ctx.throw(error.code, error.message);
+  }
 });
 module.exports = router;

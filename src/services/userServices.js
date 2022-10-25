@@ -2,9 +2,16 @@ let service = {};
 let models = require("../models");
 let User = models.user;
 
-service.getAll = async () => {
+service.getAll = async (offset = 0, limit = 10, sort , directions = "DESC") => {
     try {
-        const users = await User.findAll();
+        let options={ offset: offset, limit: limit }
+        //check input
+
+        if(sort){
+           options.order = [[sort, directions]]
+        }
+        console.log(options)
+        const users = await User.findAll(options);
         return users;
     } catch (error) {
         console.log(error)

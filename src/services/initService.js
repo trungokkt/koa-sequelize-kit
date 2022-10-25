@@ -3,6 +3,8 @@ let models = require("../models");
 let sequelize = models.sequelize
 
 async function assertDatabaseConnectionOk() {
+	console.log(process.env.USERDB)
+
 	sequelize.sync({focus:true})
 	console.log(`Checking database connection...`);
 	try {

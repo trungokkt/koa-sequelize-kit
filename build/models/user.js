@@ -15,6 +15,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     tableName: "users"
+    // hooks: {
+    //     beforeUpdate: (user, options) => {
+    //         user.name = user.name + "before"
+    //     }
+    // }
   });
+
   return User;
 };

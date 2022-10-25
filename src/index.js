@@ -14,8 +14,9 @@ app.use(bodyParser());
 
 
 //try connect database
-const init = require('./services/initService')
-init()
+let models = require("./models");
+let sequelize = models.sequelize
+
 //
 
 //middelware error handle
@@ -42,5 +43,6 @@ const todoHistoryRouter = require("./routing/todoHistoryRouter")
 app.use(todoHistoryRouter.routes()).use(todoHistoryRouter.allowedMethods());
 
 //handle
-
-app.listen(process.env.PORT || 3000);
+sequelize.sync({ focus: true }).then(async () => {
+    app.listen(process.env.PORT || 3000)
+})
