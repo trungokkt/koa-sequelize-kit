@@ -1,6 +1,6 @@
 let service = {};
-let models = require("../models");
-let TodoHistory = models.todoHistory;
+import models from '../models';
+let TodoHistory = models.TodoHistory;
 
 service.getAll = async () => {
     try {
@@ -9,7 +9,6 @@ service.getAll = async () => {
     } catch (error) {
         console.log(error)
     }
-
 };
 service.getById = async (id) => {
     try {
@@ -66,4 +65,4 @@ service.deleteTodoHistory = async (id) => {
     return todoHistory;
 };
 
-module.exports = service;
+export default service;

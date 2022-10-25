@@ -1,9 +1,10 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+var _models = _interopRequireDefault(require("../models"));
+let Todo = _models.default.Todo;
+let TodoHistory = _models.default.TodoHistory;
 let service = {};
-let models = require("../models");
-let Todo = models.todo;
-let TodoHistory = models.todoHistory;
 service.getAll = async () => {
   let todos;
   try {

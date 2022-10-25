@@ -1,20 +1,27 @@
 "use strict";
 
-var logger = require('koa-logger');
-const Koa = require("koa");
-const bodyParser = require('koa-body');
-require('dotenv').config();
-const app = new Koa();
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+require("dotenv/config");
+var _koa = _interopRequireDefault(require("koa"));
+var _koaBody = _interopRequireDefault(require("koa-body"));
+var _koaLogger = _interopRequireDefault(require("koa-logger"));
+var _todoHistoryRouter = _interopRequireDefault(require("./routing/todoHistoryRouter"));
+var _todoRouter = _interopRequireDefault(require("./routing/todoRouter"));
+var _userRouter = _interopRequireDefault(require("./routing/userRouter"));
+var _models = require("./models");
+//import library
+
+//import router
+
+//
+
+//start app
+const app = new _koa.default();
 // logger
-app.use(logger());
+app.use((0, _koaLogger.default)());
 
 // body parser
-app.use(bodyParser());
-
-//try connect database
-const init = require("./services/initService");
-init();
-//
+app.use((0, _koaBody.default)());
 
 //middelware error handle
 app.use(async (ctx, next) => {
@@ -29,13 +36,12 @@ app.use(async (ctx, next) => {
     };
   }
 });
-const userRouter = require("./routing/userRouter");
-app.use(userRouter.routes()).use(userRouter.allowedMethods());
-const todoRouter = require("./routing/todoRouter");
-app.use(todoRouter.routes()).use(todoRouter.allowedMethods());
-const todoHistoryRouter = require("./routing/todoHistoryRouter");
-app.use(todoHistoryRouter.routes()).use(todoHistoryRouter.allowedMethods());
+app.use(_userRouter.default.routes()).use(_userRouter.default.allowedMethods()).use(_todoRouter.default.routes()).use(_todoRouter.default.allowedMethods()).use(_todoHistoryRouter.default.routes()).use(_todoHistoryRouter.default.allowedMethods());
 
 //handle
-
-app.listen(process.env.PORT || 3000);
+const eraseDatabaseOnSync = true;
+_models.sequelize.sync({
+  focus: eraseDatabaseOnSync
+}).then(async () => {
+  app.listen(process.env.PORT, () => console.log(`App listening on port ${process.env.PORT}!`));
+});

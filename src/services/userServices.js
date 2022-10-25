@@ -1,6 +1,6 @@
+import models from '../models';
+let User = models.User;
 let service = {};
-let models = require("../models");
-let User = models.user;
 
 service.getAll = async (offset = 0, limit = 10, sort , directions = "DESC") => {
     try {
@@ -10,7 +10,6 @@ service.getAll = async (offset = 0, limit = 10, sort , directions = "DESC") => {
         if(sort){
            options.order = [[sort, directions]]
         }
-        console.log(options)
         const users = await User.findAll(options);
         return users;
     } catch (error) {
@@ -68,4 +67,4 @@ service.deleteUser = async (id) => {
     await user.destroy()
     return user;
 };
-module.exports = service;
+export default service;

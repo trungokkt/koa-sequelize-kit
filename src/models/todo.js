@@ -1,4 +1,4 @@
-module.exports = (sequelize ,DataTypes) => {
+const TodoModel = (sequelize ,DataTypes) => {
     const Todo = sequelize.define("todo", {
         name: {
             type: DataTypes.STRING,
@@ -34,6 +34,10 @@ module.exports = (sequelize ,DataTypes) => {
             }
         }
     })
-
+    Todo.associate = (models) => {
+        Todo.hasMany(models.TodoHistory, { foreignKey: { name: "todo_id", allowNull: false }, onDelete:"RESTRICT" });
+    }
     return Todo
 }
+
+export default TodoModel

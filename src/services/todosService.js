@@ -1,8 +1,8 @@
-let service = {};
-let models = require("../models");
-let Todo = models.todo;
-let TodoHistory = models.todoHistory;
+import models from '../models';
+let Todo = models.Todo;
+let TodoHistory = models.TodoHistory;
 
+let service = {};
 service.getAll = async () => {
     let todos 
     try {

@@ -1,24 +1,22 @@
-module.exports = (sequelize, DataTypes) => {
+const UserModel = (sequelize, DataTypes) => {
     const User = sequelize.define("user", {
-name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-},
-createdAt: {
-    type: DataTypes.DATE,
-    defaultValue: new Date()
-},
-updatedAt: {
-    type: DataTypes.DATE,
-},
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            defaultValue: new Date()
+        },
+        updatedAt: {
+            type: DataTypes.DATE,
+        },
     }, {
         tableName: "users",
-        // hooks: {
-        //     beforeUpdate: (user, options) => {
-        //         user.name = user.name + "before"
-        //     }
-        // }
     })
-
+    User.associate = (models) => {
+        User.hasMany(models.TodoHistory, { foreignKey: { name: "user_id", allowNull: false }, onDelete: "RESTRICT" });
+    };
     return User
 }
+export default UserModel;

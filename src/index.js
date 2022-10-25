@@ -1,23 +1,23 @@
-var logger = require('koa-logger')
-const Koa = require("koa");
-const bodyParser = require('koa-body');
+//import library
+import 'dotenv/config';
+import Koa from "koa"
+import bodyParser from 'koa-body'
+import logger from "koa-logger"
 
-require('dotenv').config();
+//import router
+import todoHistoryRouter from "./routing/todoHistoryRouter"
+import todoRouter from "./routing/todoRouter"
+import userRouter from "./routing/userRouter"
 
-
+//
+import { sequelize } from "./models"
+//start app
 const app = new Koa();
 // logger
 app.use(logger())
 
 // body parser
 app.use(bodyParser());
-
-
-//try connect database
-let models = require("./models");
-let sequelize = models.sequelize
-
-//
 
 //middelware error handle
 app.use(async (ctx, next) => {
@@ -33,16 +33,20 @@ app.use(async (ctx, next) => {
     }
 })
 
-const userRouter = require("./routing/userRouter")
-app.use(userRouter.routes()).use(userRouter.allowedMethods());
-
-const todoRouter = require("./routing/todoRouter")
-app.use(todoRouter.routes()).use(todoRouter.allowedMethods());
-
-const todoHistoryRouter = require("./routing/todoHistoryRouter")
-app.use(todoHistoryRouter.routes()).use(todoHistoryRouter.allowedMethods());
+app
+    .use(userRouter.routes())
+    .use(userRouter.allowedMethods())
+    .use(todoRouter.routes())
+    .use(todoRouter.allowedMethods())
+    .use(todoHistoryRouter.routes())
+    .use(todoHistoryRouter.allowedMethods());
 
 //handle
-sequelize.sync({ focus: true }).then(async () => {
-    app.listen(process.env.PORT || 3000)
+const eraseDatabaseOnSync = true;
+sequelize.sync({ focus: eraseDatabaseOnSync }).then(async () => {
+    app.listen(process.env.PORT, () =>
+        console.log(`App listening on port ${process.env.PORT}!`),
+    );
 })
+
+

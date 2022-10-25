@@ -1,13 +1,24 @@
 "use strict";
 
-const Router = require('koa-router');
-const router = Router({
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _koaRouter = _interopRequireDefault(require("koa-router"));
+var _userServices = _interopRequireDefault(require("../services/userServices"));
+const router = (0, _koaRouter.default)({
   prefix: '/users'
 });
-const userService = require("../services/userServices");
 router.get("/", async (ctx, next) => {
   try {
-    const users = await userService.getAll();
+    const {
+      offset,
+      limit,
+      sort,
+      directions
+    } = ctx.request.query;
+    const users = await _userServices.default.getAll(offset, limit, sort, directions);
     ctx.body = users;
   } catch (error) {
     ctx.throw(error.code, error.message);
@@ -15,7 +26,7 @@ router.get("/", async (ctx, next) => {
 });
 router.get("/:id", async (ctx, next) => {
   try {
-    const user = await userService.getByPK(ctx.params.id);
+    const user = await _userServices.default.getByPK(ctx.params.id);
     ctx.body = user;
   } catch (error) {
     ctx.throw(error.code, error.message);
@@ -28,7 +39,7 @@ router.post("/", async (ctx, next) => {
       ctx.status = 400;
       throw new Error("name cannot be null");
     }
-    const user = await userService.createUser(name);
+    const user = await _userServices.default.createUser(name);
     ctx.body = user;
   } catch (error) {
     ctx.throw(error.code, error.message);
@@ -42,7 +53,7 @@ router.put("/", async (ctx, next) => {
       error.code = 400;
       throw error;
     }
-    const u = await userService.updateUser(user);
+    const u = await _userServices.default.updateUser(user);
     ctx.body = u;
   } catch (error) {
     ctx.throw(error.code, error.message);
@@ -51,10 +62,11 @@ router.put("/", async (ctx, next) => {
 router.delete("/:id", async (ctx, next) => {
   try {
     const id = ctx.params.id;
-    const user = await userService.deleteUser(id);
+    const user = await _userServices.default.deleteUser(id);
     ctx.body = user;
   } catch (error) {
     ctx.throw(error.code, error.message);
   }
 });
-module.exports = router;
+var _default = router;
+exports.default = _default;

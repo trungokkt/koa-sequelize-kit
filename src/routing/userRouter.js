@@ -1,6 +1,6 @@
-const Router = require('koa-router')
+import Router from 'koa-router';
 const router = Router({ prefix: '/users' })
-const userService = require("../services/userServices")
+import userService  from "../services/userServices"
 
 router.get("/", async (ctx, next) => {
     try {
@@ -58,4 +58,4 @@ router.delete("/:id", async (ctx, next) => {
     }
 });
 
-module.exports = router
+export default router

@@ -1,11 +1,25 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _models = _interopRequireDefault(require("../models"));
+let User = _models.default.User;
 let service = {};
-let models = require("../models");
-let User = models.user;
-service.getAll = async () => {
+service.getAll = async (offset = 0, limit = 10, sort, directions = "DESC") => {
   try {
-    const users = await User.findAll();
+    let options = {
+      offset: offset,
+      limit: limit
+    };
+    //check input
+
+    if (sort) {
+      options.order = [[sort, directions]];
+    }
+    const users = await User.findAll(options);
     return users;
   } catch (error) {
     console.log(error);
@@ -60,4 +74,5 @@ service.deleteUser = async id => {
   await user.destroy();
   return user;
 };
-module.exports = service;
+var _default = service;
+exports.default = _default;

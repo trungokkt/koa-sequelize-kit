@@ -1,8 +1,13 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _models = _interopRequireDefault(require("../models"));
 let service = {};
-let models = require("../models");
-let TodoHistory = models.todoHistory;
+let TodoHistory = _models.default.TodoHistory;
 service.getAll = async () => {
   try {
     const todoHistory = await TodoHistory.findAll();
@@ -66,4 +71,5 @@ service.deleteTodoHistory = async id => {
   await todoHistory.destroy();
   return todoHistory;
 };
-module.exports = service;
+var _default = service;
+exports.default = _default;

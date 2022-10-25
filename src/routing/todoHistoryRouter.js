@@ -1,6 +1,6 @@
-const Router = require('koa-router')
+import Router from 'koa-router';
 const router = Router({ prefix: '/history'})
-const todoHistoryService = require("../services/todoHistoryService")
+import todoHistoryService from "../services/todoHistoryService"
 
 router.get("/", async (ctx, next) => {
     try {
@@ -49,4 +49,4 @@ router.delete("/", async (ctx, next) => {
 
 });
 
-module.exports = router
+export default router

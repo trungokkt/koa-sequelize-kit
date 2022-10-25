@@ -1,6 +1,10 @@
 "use strict";
 
-module.exports = (sequelize, DataTypes) => {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+const TodoModel = (sequelize, DataTypes) => {
   const Todo = sequelize.define("todo", {
     name: {
       type: DataTypes.STRING,
@@ -36,5 +40,16 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   });
+  Todo.associate = models => {
+    Todo.hasMany(models.TodoHistory, {
+      foreignKey: {
+        name: "todo_id",
+        allowNull: false
+      },
+      onDelete: "RESTRICT"
+    });
+  };
   return Todo;
 };
+var _default = TodoModel;
+exports.default = _default;
