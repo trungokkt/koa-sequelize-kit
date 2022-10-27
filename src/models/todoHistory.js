@@ -12,8 +12,7 @@ const TodoHistoryModel = (sequelize, DataTypes) => {
         },
         comment: {
             type: DataTypes.STRING,
-            allowNull: false,
-            defaultValue: 0
+            allowNull: true
         },
         createdAt: {
             type: DataTypes.DATE,

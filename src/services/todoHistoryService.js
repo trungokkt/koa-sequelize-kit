@@ -7,13 +7,13 @@ let Todo = models.Todo;
 service.getAll = async ({ offset = 0, limit = 10, sort, directions = "DESC" }) => {
     try {
         let options = {
-            offset: offset, limit: limit, include: [User, Todo],  raw: true, nest: true
+            offset: offset, limit: limit, include: [User, Todo]
         }
         //check input
         if (sort) {
             options.order = [[sort, directions]]
         }
-        const todoHistory = await TodoHistory.findAll(options);
+        const todoHistory = await TodoHistory.findAll(options).map(el => el.get({}));
         return todoHistory;
     } catch (error) {
         console.log(error)
@@ -76,5 +76,38 @@ service.deleteTodoHistory = async (id) => {
     }
     await todoHistory.destroy();
     return todoHistory;
+};
+service.deleteTodoHistory = async (id) => {
+    let todoHistory
+    try {
+        todoHistory = await TodoHistory.findByPk(id);
+    } catch (error) {
+        console.log(error)
+    }
+    if (!todoHistory) {
+        let error = new Error("delete: todo history not exist")
+        error.code = 404
+        throw error
+    }
+    await todoHistory.destroy();
+    return todoHistory;
+};
+service.getAllByUser = async (id) => {
+    try {
+        const todoHistory = await TodoHistory.findAll({
+            attributes: ['status','process', 'comment','createdAt'],
+            where: {
+                user_id: id
+            },
+            include: [
+                { model: User, attributes: ["username",'name']},
+                { model: Todo, attributes: ["name"]}],
+            raw: true,
+            nest: true
+        });
+        return todoHistory;
+    } catch (error) {
+        console.log(error)
+    }
 };
 export default service;

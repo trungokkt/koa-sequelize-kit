@@ -2,8 +2,8 @@ import todoHistoryService from "../services/todoHistoryService"
 
 const getAllTodoHistory = async (ctx, next) => {
     try {
-        const options = ctx.request.query
-        const history = await todoHistoryService.getAll(options)
+        const user_id = ctx.user.id
+        const history = await todoHistoryService.getAllByUser(user_id)
         ctx.body = history
     } catch (error) {
         ctx.throw(error.code, error.message);
