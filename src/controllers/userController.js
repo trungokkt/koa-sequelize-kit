@@ -1,7 +1,70 @@
-const controller = {}
+import userService from "../services/userServices"
 
-controller.getAllUser = async (ctx) =>{
- 
+const getAllUser = async (ctx, next) => {
+    try {
+        //const { offset, limit , sort, directions} = ctx.request.query
+        const options = ctx.request.query
+        const users = await userService.getAll(options)
+        ctx.body = users
+    } catch (error) {
+        ctx.throw(error.code, error.message);
+    }
+}
+const getDetailUser = async (ctx, next) => {
+    try {
+        const user = await userService.getByPK(ctx.user.id)
+        ctx.body = user
+    } catch (error) {
+        ctx.throw(error.code, error.message);
+    }
+}
+const createUser = async (ctx, next) => {
+    try {
+        const req_user = ctx.request.body
+        const user = await userService.createUser(req_user)
+        ctx.body = user
+    } catch (error) {
+        ctx.throw(error.code, error.message);
+    }
+}
+const updateUser = async (ctx, next) => {
+    try {
+        const id = ctx.user.id
+        const name = ctx.request.body.name
+        const u = await userService.updateUser({ id, name })
+        ctx.body = u
+    } catch (error) {
+        ctx.throw(error.code, error.message);
+    }
+}
+const deleteUser = async (ctx, next) => {
+    try {
+        const id = ctx.user.id
+        const user = await userService.deleteUser(id)
+        ctx.body = user
+    } catch (error) {
+        ctx.throw(error.code, error.message);
+    }
+}
+const loginUser = async (ctx, next) => {
+    try {
+        const req_user = ctx.request.body
+        // if (!name) {
+        //     ctx.status = 400
+        //     throw new Error("name cannot be null")
+        // }
+        const user = await userService.checkLogin(req_user)
+        ctx.body = user
+    } catch (error) {
+        ctx.throw(error.code, error.message);
+    }
 }
 
-export default controller
+export {
+    getAllUser,
+    getDetailUser,
+    createUser,
+    updateUser,
+    deleteUser,
+    loginUser
+}

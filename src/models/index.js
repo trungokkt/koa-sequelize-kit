@@ -19,6 +19,13 @@ const models = {
     Todo: TodoModel(sequelize, Sequelize),
     TodoHistory: TodoHistoryModel(sequelize, Sequelize),
 };
+
+// const hashPassword = async (password) => {
+//     const hashedPassword = 
+//     return password
+// }
+
+
 //set relationship
 Object.keys(models).forEach((modelName) => {
     if (models[modelName].associate) {

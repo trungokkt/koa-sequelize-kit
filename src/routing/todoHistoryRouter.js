@@ -1,52 +1,37 @@
 import Router from 'koa-router';
-const router = Router({ prefix: '/history'})
-import todoHistoryService from "../services/todoHistoryService"
-
-router.get("/", async (ctx, next) => {
-    try {
-        const history = await todoHistoryService.getAll()
-        ctx.body = history
-    } catch (error) {
-        ctx.throw(error.code , error.message);
-    }
-});
-router.get("/:id", async (ctx, next) => {
-    try {
-        const history = await todoHistoryService.getById(ctx.params.id)
-        ctx.body = history
-    } catch (error) {
-        ctx.throw(error.code , error.message);
-    }
-});
-router.post("/", async (ctx, next) => {
-    try {
-        const data = ctx.request.body
-        const todo = await todoHistoryService.createTodoHistory(data)
-        ctx.body = todo
-    } catch (error) {
-        ctx.throw(error.code , error.message);
-    }
-
-});
-router.put("/", async (ctx, next) => {
-    try {
-        const data = ctx.request.body
-        const todo = await todoHistoryService.updateTodoHistory(data)
-        ctx.body = todo
-    } catch (error) {
-        ctx.throw(error.code , error.message);
-    }
-
-});
-router.delete("/", async (ctx, next) => {
-    try {
-        const id = ctx.params.id
-        const todo = await todoHistoryService.deleteTodoHistory(id)
-        ctx.body = todo
-    } catch (error) {
-        ctx.throw(error.code , error.message);
-    }
-
-});
+const router = Router({ prefix: '/history' })
+import * as todoHistoryService from "../controllers/todoHistoryController"
+import auth from '../middleware/auth';
+import { validatorRouter } from "../middleware/validatorRouter"
+router
+    .get("/",
+        auth,
+        validatorRouter({
+            limit: { type: "int", convertType: "int", required: false },
+            offset: { type: "int", convertType: "int", required: false },
+            sort: { type: "string", convertType: "string", required: false },
+            directions: { type: "enum", values: ['asc', 'desc'], required: false },
+        }, 'query'),
+        todoHistoryService.getAllTodoHistory
+    )
+    .get("/:id", todoHistoryService.getDetailTodoHistory)
+    .post("/",
+        auth,
+        validatorRouter({
+            todo_id: { type: "int", convertType: "int" }
+        }, 'body'),
+        todoHistoryService.createTodoHistory
+    )
+    .put("/",
+        auth,
+        validatorRouter({
+            id: { type: "int", convertType: "int", required: true },
+            process: { type: "int", convertType: "int", required: false },
+            status: { type: 'bool', required: false },
+            comment: { type: 'string', required: false },
+        },"body"),
+        todoHistoryService.updateTodoHistory
+    )
+    .delete("/:id", todoHistoryService.deleteTodoHistory);
 
 export default router

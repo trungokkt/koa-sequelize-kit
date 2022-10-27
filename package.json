@@ -9,7 +9,6 @@
     "build-babel": "babel ./src -d build",
     "build": "npm run clean && npm run build-babel",
     "production": "npm run build && node ./build/src/index.js",
-    "dev": "nodemon --exec babel-node ./src/index.js",
     "start": "nodemon --exec babel-node ./src/index.js"
   },
   "author": "",
@@ -17,9 +16,11 @@
   "dependencies": {
     "@babel/runtime": "^7.19.4",
     "babel-plugin-module-resolver": "^4.1.0",
+    "bcrypt": "^5.1.0",
     "cross-env": "^5.2.0",
     "dotenv": "^16.0.3",
     "enforce-node-path": "^1.0.0",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.6.2",
     "koa-body": "^5.0.0",
     "koa-bodyparser": "^4.3.0",
@@ -27,9 +28,11 @@
     "koa-morgan": "^1.0.1",
     "koa-response-time": "^2.1.0",
     "koa-router": "^7.4.0",
+    "parameter": "^3.6.0",
     "pg": "^7.8.0",
     "postgres-migrations": "^3.0.2",
-    "sequelize": "^6.25.2"
+    "sequelize": "^6.25.2",
+    "xlsx-populate": "^1.21.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.19.3",

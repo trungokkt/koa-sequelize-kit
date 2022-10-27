@@ -3,10 +3,15 @@ let Todo = models.Todo;
 let TodoHistory = models.TodoHistory;
 
 let service = {};
-service.getAll = async () => {
-    let todos 
+service.getAll = async ({ offset = 0, limit = 10, sort, directions = "DESC" }) => {
+    let options = { offset: offset, limit: limit }
+    //check input
+    if (sort) {
+        options.order = [[sort, directions]]
+    }
+    let todos
     try {
-        todos = await Todo.findAll();
+        todos = await Todo.findAll(options);
     } catch (error) {
         console.log(error)
     }
@@ -14,7 +19,7 @@ service.getAll = async () => {
 };
 service.getById = async (id) => {
     try {
-        const todo = await Todo.findAll({
+        const todo = await Todo.findOne({
             where: {
                 id: id
             },
@@ -24,7 +29,6 @@ service.getById = async (id) => {
     } catch (error) {
         console.log(error)
     }
-  
 };
 service.createTodo = async (name, description) => {
     try {
@@ -36,15 +40,15 @@ service.createTodo = async (name, description) => {
 
 };
 service.updateTodo = async (data) => {
-    
+
     let todo
     try {
         todo = await Todo.findByPk(data.id);
     } catch (error) {
         console.log(error)
-    } 
+    }
     if (!todo) {
-        let error = new Error("can not find todo with id :"+ data.id)
+        let error = new Error("can not find todo with id :" + data.id)
         error.code = 404
         throw error
     }
@@ -58,14 +62,14 @@ service.deleteTodo = async (id) => {
     try {
         todo = await Todo.findByPk(id);
     } catch (error) {
-        
+
     }
     if (!todo) {
-        let error = new Error("can not find todo with id :"+ data.id)
+        let error = new Error("can not find todo with id :" + data.id)
         error.code = 404
         throw error
     }
     await todo.destroy();
     return todo;
 };
-module.exports = service;
+export default service;

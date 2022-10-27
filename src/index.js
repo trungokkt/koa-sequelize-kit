@@ -8,9 +8,11 @@ import logger from "koa-logger"
 import todoHistoryRouter from "./routing/todoHistoryRouter"
 import todoRouter from "./routing/todoRouter"
 import userRouter from "./routing/userRouter"
+import reportRouter from "./routing/reportRouter"
 
-//
 import { sequelize } from "./models"
+
+
 //start app
 const app = new Koa();
 // logger
@@ -25,6 +27,7 @@ app.use(async (ctx, next) => {
         await next();
     } catch (err) {
         // will only respond with JSON
+        console.log(err)
         ctx.status = err.statusCode || err.status || 500;
         ctx.body = {
             statusCode: err.statusCode || err.status || 500,
@@ -39,14 +42,13 @@ app
     .use(todoRouter.routes())
     .use(todoRouter.allowedMethods())
     .use(todoHistoryRouter.routes())
-    .use(todoHistoryRouter.allowedMethods());
-
+    .use(todoHistoryRouter.allowedMethods())
+    .use(reportRouter.routes())
+    .use(reportRouter.allowedMethods());
 //handle
-const eraseDatabaseOnSync = true;
-sequelize.sync({ focus: eraseDatabaseOnSync }).then(async () => {
+const eraseDatabaseOnSync = false;
+sequelize.sync({focus : eraseDatabaseOnSync}).then(async () => {
     app.listen(process.env.PORT, () =>
         console.log(`App listening on port ${process.env.PORT}!`),
     );
 })
-
-

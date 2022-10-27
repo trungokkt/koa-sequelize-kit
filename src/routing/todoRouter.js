@@ -1,54 +1,33 @@
 import Router from 'koa-router';
 const router = Router({ prefix: '/todos' })
-import todoService from "../services/todosService"
-
-router.get("/", async (ctx, next) => {
-    try {
-        const todos = await todoService.getAll()
-        ctx.body = todos
-    } catch (error) {
-        ctx.throw(error.code , error.message);
-    }
-    
-});
-router.get("/:id", async (ctx, next) => {
-    try {
-        const todo = await todoService.getById(ctx.params.id)
-        ctx.body = todo
-    } catch (error) {
-        ctx.throw(error.code , error.message);
-    }
-
-});
-router.post("/", async (ctx, next) => {
-    try {
-        const { name, description } = ctx.request.body
-        const todo = await todoService.createTodo(name, description)
-        ctx.body = todo
-    } catch (error) {
-        ctx.throw(error.code , error.message);
-    }
-
-});
-router.put("/", async (ctx, next) => {
-    try {
-        const data = ctx.request.body
-        const todo = await todoService.updateTodo(data)
-        ctx.body = todo
-    } catch (error) {
-        ctx.throw(error.code , error.message);
-    }
-
-});
-router.delete("/:id", async (ctx, next) => {
-    try {
-        const id = ctx.params.id
-        const todo = await todoService.deleteTodo(id)
-        ctx.body = todo
-    } catch (error) {
-        ctx.throw(error.code , error.message);
-    }
-
-});
+import { validatorRouter } from '../middleware/validatorRouter';
+import * as todoController from '../controllers/todoController'
+router
+    .get("/",
+        validatorRouter({
+            limit: { type: "int", convertType: "int", required: false },
+            offset: { type: "int", convertType: "int", required: false },
+            sort: { type: "string", convertType: "string", required: false },
+            directions: { type: "enum", values: ['asc', 'desc'], required: false },
+        }, 'query'),
+        todoController.getAllTodo
+    )
+    .get("/:id", todoController.getDetailTodo)
+    .post("/",
+        validatorRouter({
+            name: { type: "string" },
+            description: { type: "string", required: false },
+        }, "body"),
+        todoController.createTodo
+    )
+    .put("/",
+        validatorRouter({
+            id: { type: "int", convertType: "int" },
+            name: { type: "string" },
+            description: { type: "string", required: false },
+        }, "body"),
+        todoController.updateTodo
+    )
+    .delete("/:id", todoController.deleteTodo)
 
 export default router
