@@ -5,7 +5,10 @@ let service = {};
 
 service.getAll = async ({ offset = 0, limit = 10, sort, directions = "DESC" }) => {
     try {
-        let options = { offset: offset, limit: limit }
+        let options = {}
+        if(limit !==0){ //get all ìf limit =0
+            options = { offset: offset, limit: limit }
+        }
         //check input
         if (sort) {
             options.order = [[sort, directions]]
@@ -82,7 +85,7 @@ service.deleteUser = async (id) => {
     await user.destroy()
     return user;
 };
-service.checkLogin = async ({ username, password }) => {
+service.Login = async ({ username, password }) => {
     try {
         const user = await User.checkLogin(username, password);
         let token = generateJwt(user);

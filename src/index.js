@@ -5,9 +5,10 @@ import bodyParser from 'koa-body'
 import logger from "koa-logger"
 
 //import router
-import todoHistoryRouter from "./routing/todoHistoryRouter"
-import todoRouter from "./routing/todoRouter"
 import userRouter from "./routing/userRouter"
+import todoRouter from "./routing/todoRouter"
+import taskRouter from "./routing/taskRouter"
+import joinRouter from "./routing/joinRouter"
 import reportRouter from "./routing/reportRouter"
 
 import { sequelize } from "./models"
@@ -41,13 +42,15 @@ app
     .use(userRouter.allowedMethods())
     .use(todoRouter.routes())
     .use(todoRouter.allowedMethods())
-    .use(todoHistoryRouter.routes())
-    .use(todoHistoryRouter.allowedMethods())
+    .use(taskRouter.routes())
+    .use(taskRouter.allowedMethods())
+    .use(joinRouter.routes())
+    .use(joinRouter.allowedMethods())
     .use(reportRouter.routes())
     .use(reportRouter.allowedMethods());
 //handle
 const eraseDatabaseOnSync = false;
-sequelize.sync({focus : eraseDatabaseOnSync}).then(async () => {
+sequelize.sync({force: eraseDatabaseOnSync}).then(async () => {
     app.listen(process.env.PORT, () =>
         console.log(`App listening on port ${process.env.PORT}!`),
     );

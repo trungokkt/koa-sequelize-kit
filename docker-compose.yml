@@ -2,7 +2,6 @@ version: '1.0'
 services:
   api:
     container_name: api
-    restart: always
     build: .
     ports:
       - ${PORT}:${PORT}
@@ -10,7 +9,6 @@ services:
       - db
     volumes:
     - .:/usr/src/app
-
   db:
     container_name: postgres
     image: postgres
@@ -21,6 +19,5 @@ services:
     environment:
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
       - POSTGRES_DB=${DATABASE}
-
 volumes: 
  data: {}

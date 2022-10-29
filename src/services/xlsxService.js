@@ -1,28 +1,64 @@
 import XlsxPopulate from "xlsx-populate";
-import service from "./todoHistoryService"
-const generateReport = async (user_id) => {
+
+import taskService from "./taskService"
+import todosService from "./todosService"
+
+const generateTask = async () => {
     // Load a new blank workbook
     const workbook = await XlsxPopulate.fromBlankAsync();
     // workbook.sheet("Sheet1").cell("A1").value("This is neat!");
-    const data = await service.getAllByUser(user_id);
+    const options = {}
+    const data = await taskService.getAll(options);
     console.log(data)
     //header
-    const header = ["Tên công việc", "Người thực hiện", "Tên", "Tiến trình", "Tình trạng", "Comment", "CreateAt"]
+    const header = ["Tên task", "Mô tả", "số lượng công việc", "Hoàn thành", "Ngày tạo", "Ngày hoàn thành", "Status"]
     workbook.sheet("Sheet1").cell("A1").value([
         header
     ]);
     //style- format date dd-mm-yyyy
-    workbook.sheet("Sheet1").column(7).width(15).hidden(false).style("numberFormat", "dd-mm-yyyy");
+    workbook.sheet("Sheet1").column(5).width(15).hidden(false).style("numberFormat", "dd-mm-yyyy");
+    workbook.sheet("Sheet1").column(6).width(15).hidden(false).style("numberFormat", "dd-mm-yyyy");
 
     for (let i = 0; i < data.length; i++) {
-        workbook.sheet("Sheet1").cell(i + 2, 1).value(data[i].todo.name);
-        workbook.sheet("Sheet1").cell(i + 2, 2).value(data[i].user.username);
-        workbook.sheet("Sheet1").cell(i + 2, 3).value(data[i].user.name);
-        workbook.sheet("Sheet1").cell(i + 2, 4).value(data[i].process);
-        workbook.sheet("Sheet1").cell(i + 2, 5).value(data[i].status);
-        workbook.sheet("Sheet1").cell(i + 2, 6).value(data[i].comment);
-        workbook.sheet("Sheet1").cell(i + 2, 7).value(data[i].createdAt)
+        workbook.sheet("Sheet1").cell(i + 2, 1).value(data[i].name);
+        workbook.sheet("Sheet1").cell(i + 2, 2).value(data[i].description);
+        workbook.sheet("Sheet1").cell(i + 2, 3).value(data[i].total_todo);
+        workbook.sheet("Sheet1").cell(i + 2, 4).value(data[i].total_todo_completed);
+        workbook.sheet("Sheet1").cell(i + 2, 5).value(data[i].createdAt);
+        workbook.sheet("Sheet1").cell(i + 2, 6).value(data[i].completeAt);
+        workbook.sheet("Sheet1").cell(i + 2, 7).value(data[i].status)
     }
     return workbook.outputAsync();
 }
-export default generateReport;
+
+const generateTodoOfUser = async (user_id) => {
+    // Load a template
+    const workbook = await XlsxPopulate.fromFileAsync("src/template/template.xlsx");
+    // workbook.sheet("Sheet1").cell("A1").value("This is neat!");
+    const data = await todosService.getAll({ user_id: user_id, limit: 0,extend: true});
+    console.log(data)
+    //header
+    // const header = ["Tài khoản","Tên task" ,"Tên công việc","Mô tả", "Người thực hiện", "Tình trạng", "Ngày hoàn thành","Ngày tạo"]
+    // workbook.sheet("Sheet1").cell("A1").value([
+    //     header
+    // ]);
+    //style- format date dd-mm-yyyy
+    workbook.sheet("Sheet1").column(7).width(15).hidden(false).style("numberFormat", "dd-mm-yyyy");
+    workbook.sheet("Sheet1").column(8).width(15).hidden(false).style("numberFormat", "dd-mm-yyyy");
+
+    for (let i = 0; i < data.length; i++) {
+        workbook.sheet("Sheet1").cell(i + 2, 1).value(data[i].user.username);
+        workbook.sheet("Sheet1").cell(i + 2, 2).value(data[i].task.name);
+        workbook.sheet("Sheet1").cell(i + 2, 3).value(data[i].name);
+        workbook.sheet("Sheet1").cell(i + 2, 4).value(data[i].description);
+        workbook.sheet("Sheet1").cell(i + 2, 5).value(data[i].user.name);
+        workbook.sheet("Sheet1").cell(i + 2, 6).value(data[i].completed?"Hoàn thành":"Chưa hoàn thành");
+        workbook.sheet("Sheet1").cell(i + 2, 7).value(data[i].completeDate)
+        workbook.sheet("Sheet1").cell(i + 2, 8).value(data[i].createdAt)
+    }
+    return workbook.outputAsync();
+}
+export {
+    generateTask,
+    generateTodoOfUser
+};

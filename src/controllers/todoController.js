@@ -1,6 +1,6 @@
 import todoService from "../services/todosService"
 
-const getAllTodo =async (ctx, next) => {
+const getAllTodoUserJoined = async (ctx, next) => {
     try {
         const options = ctx.request.query
         const todos = await todoService.getAll(options)
@@ -9,7 +9,7 @@ const getAllTodo =async (ctx, next) => {
         ctx.throw(error.code, error.message);
     }
 }
-const getDetailTodo=async (ctx, next) => {
+const getDetailTodo = async (ctx, next) => {
     try {
         const todo = await todoService.getById(ctx.params.id)
         ctx.body = todo
@@ -18,19 +18,20 @@ const getDetailTodo=async (ctx, next) => {
     }
 
 }
-const createTodo=async (ctx, next) => {
+const createTodo = async (ctx, next) => {
     try {
-        const { name, description } = ctx.request.body
-        const todo = await todoService.createTodo(name, description)
+        const data = ctx.request.body
+        const todo = await todoService.createTodo(data)
         ctx.body = todo
     } catch (error) {
         ctx.throw(error.code, error.message);
     }
 
 }
-const updateTodo=async (ctx, next) => {
+const updateTodo = async (ctx, next) => {
     try {
         const data = ctx.request.body
+        data.user_id = ctx.user.id
         const todo = await todoService.updateTodo(data)
         ctx.body = todo
     } catch (error) {
@@ -38,7 +39,7 @@ const updateTodo=async (ctx, next) => {
     }
 
 }
-const deleteTodo=async (ctx, next) => {
+const deleteTodo = async (ctx, next) => {
     try {
         const id = ctx.params.id
         const todo = await todoService.deleteTodo(id)
@@ -48,11 +49,23 @@ const deleteTodo=async (ctx, next) => {
     }
 
 }
+const JoinTodo = async (ctx, next) => {
+    try {
+        const todo_id = ctx.request.body.todo_id
+        const user_id = ctx.user.id
+        const todo = await todoService.joinTodo({ todo_id, user_id })
+        ctx.body = todo
+    } catch (error) {
+        ctx.throw(error.code, error.message);
+    }
+
+}
 
 export {
-    getAllTodo,
+    getAllTodoUserJoined,
     getDetailTodo,
     createTodo,
     updateTodo,
-    deleteTodo
+    deleteTodo,
+    JoinTodo
 }

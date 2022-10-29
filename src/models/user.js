@@ -33,7 +33,8 @@ const UserModel = (sequelize, DataTypes) => {
         }
     })
     User.associate = (models) => {
-        User.hasMany(models.TodoHistory, { foreignKey: { name: "user_id", allowNull: false }, onDelete: "RESTRICT" });
+        User.hasMany(models.Todo, { foreignKey: { name: "user_id", allowNull: false }, onDelete: "RESTRICT" });
+        User.hasMany(models.JoinTask, { foreignKey: { name: "user_id", allowNull: false }, onDelete: "RESTRICT" });
     };
     User.checkLogin = async (username, password) => {
         const user = await User.findOne({

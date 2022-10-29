@@ -53,8 +53,10 @@ const loginUser = async (ctx, next) => {
         //     ctx.status = 400
         //     throw new Error("name cannot be null")
         // }
-        const user = await userService.checkLogin(req_user)
-        ctx.body = user
+        const token = await userService.Login(req_user)
+        ctx.body = {
+            token
+        }
     } catch (error) {
         ctx.throw(error.code, error.message);
     }

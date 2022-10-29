@@ -24,18 +24,20 @@ const TodoModel = (sequelize ,DataTypes) => {
         updatedAt: { 
             type: DataTypes.DATE,
          },
+         user_id:{
+            type: DataTypes.INTEGER,
+            allowNull: true,
+         },
+         task_id:{
+            type: DataTypes.INTEGER,
+            allowNull: false,
+         }
     },{
         tableName: 'todos',
-        hooks : {
-            beforeUpdate : (todo, options) => {
-                if(todo.completed ==true){
-                    todo.completeDate = new Date()
-                }
-            }
-        }
     })
     Todo.associate = (models) => {
-        Todo.hasMany(models.TodoHistory, { foreignKey: { name: "todo_id", allowNull: false }, onDelete:"RESTRICT" });
+        Todo.belongsTo(models.Task, { foreignKey: { name: "task_id"}, onDelete:"RESTRICT" });
+        Todo.belongsTo(models.User, { foreignKey: { name: "user_id"}, onDelete:"RESTRICT" });
     }
     return Todo
 }
