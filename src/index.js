@@ -18,6 +18,9 @@ import { sequelize } from "./models"
 
 //start app
 const app = new Koa();
+
+app.use(serve('public'));
+
 // logger
 app.use(logger())
 
@@ -40,7 +43,6 @@ app.use(async (ctx, next) => {
 })
 
 //
-app.use(serve(__dirname + './public'));
 
 app
     .use(userRouter.routes())
@@ -53,10 +55,10 @@ app
     .use(joinRouter.allowedMethods())
     .use(reportRouter.routes())
     .use(reportRouter.allowedMethods());
-    
+
 //handle
 const eraseDatabaseOnSync = false;
-sequelize.sync({force: eraseDatabaseOnSync}).then(async () => {
+sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
     app.listen(process.env.PORT, () =>
         console.log(`App listening on port ${process.env.PORT}!`),
     );

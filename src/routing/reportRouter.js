@@ -13,13 +13,20 @@ router.post("/tasks", auth, async (ctx) => {
     ctx.body = data
 })
 router.post("/todos", auth, async (ctx) => {
-    const data = await generateReport()
+    const data = await generateTodoOfUser()
     ctx.set(
         "Content-disposition",
         'attachment; filename="todos.xlsx"'
     );
     ctx.body = data
 })
-
+router.post("/report", auth, async (ctx) => {
+    const data = await generateReport()
+    ctx.set(
+        "Content-disposition",
+        'attachment; filename="report.xlsx"'
+    );
+    ctx.body = data
+})
 
 export default router
