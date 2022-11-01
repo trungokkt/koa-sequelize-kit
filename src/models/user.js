@@ -14,13 +14,16 @@ const UserModel = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: false,
         },
+        avatar: {
+            type: DataTypes.TEXT
+        },
         createdAt: {
             type: DataTypes.DATE,
             defaultValue: new Date()
         },
         updatedAt: {
             type: DataTypes.DATE,
-        },
+        }
     }, {
         tableName: "users",
         hooks: {

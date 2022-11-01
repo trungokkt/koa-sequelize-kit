@@ -1,7 +1,21 @@
 let service = {};
 import models from '../models';
 let JoinTask = models.JoinTask;
+service.getAll = async ({ offset = 0, limit = 10, sort, directions = "DESC" }) => {
+    let options = { offset: offset, limit: limit }
+    //check input
+    if (sort) {
+        options.order = [[sort, directions]]
+    }
+    let joins
+    try {
+        joins = await JoinTask.findAll(options);
+    } catch (error) {
+        console.log(error)
+    }
 
+    return joins;
+};
 service.createJoinTask = async ({ user_id, task_id }) => {
     try {
         const create = await JoinTask.create({ user_id: user_id, task_id: task_id });
@@ -51,5 +65,4 @@ service.deleteJoinTask = async ({ user_id, task_id }) => {
     await join.destroy();
     return join;
 };
-
 export default service;

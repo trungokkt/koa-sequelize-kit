@@ -31,28 +31,33 @@ service.getById = async (id) => {
         console.log(error)
     }
 };
-service.createTask = async (name, description) => {
+service.createTask = async (name, description, attached_files) => {
     try {
-        const task = await Task.create({ name: name, description: description });
+        const task = await Task.create({ name: name, description: description, attached_files: attached_files });
         return task;
     } catch (error) {
         console.log(error)
     }
 };
-service.updateTask = async (data) => {
+service.updateTask = async ({ id, name, description, attached_files, new_attached_files }) => {
     let task
     try {
-        task = await Task.findByPk(data.id);
+        task = await Task.findByPk(id);
     } catch (error) {
         console.log(error)
     }
     if (!task) {
-        let error = new Error("can not find task with id :" + data.id)
+        let error = new Error("can not find task with id :" + id)
         error.code = 404
         throw error
     }
-    task.name = data.name,
-        task.description = data.description
+    if (name) {
+        task.name = name
+    }
+    if (description) {
+        task.description = description
+    }
+    task.attached_files = [...attached_files, ...new_attached_files]
     task = await task.save();
     return task;
 };

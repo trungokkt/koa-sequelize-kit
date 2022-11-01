@@ -52,7 +52,7 @@ service.createUser = async ({ username, name, password }) => {
         console.log(error)
     }
 };
-service.updateUser = async ({ id, name }) => {
+service.updateUser = async ({ id, name ,avatar}) => {
     let user
     try {
         user = await User.findByPk(id)
@@ -64,7 +64,12 @@ service.updateUser = async ({ id, name }) => {
         error.code = 400
         throw error
     }
-    user.name = name
+    if(name){
+        user.name = name
+    }
+    if(avatar){
+        user.avatar = avatar
+    }
     user = await user.save()
 
     return user;

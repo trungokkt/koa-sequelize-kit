@@ -2,7 +2,9 @@
 import 'dotenv/config';
 import Koa from "koa"
 import bodyParser from 'koa-body'
+
 import logger from "koa-logger"
+import serve from "koa-static"
 
 //import router
 import userRouter from "./routing/userRouter"
@@ -37,6 +39,9 @@ app.use(async (ctx, next) => {
     }
 })
 
+//
+app.use(serve(__dirname + './public'));
+
 app
     .use(userRouter.routes())
     .use(userRouter.allowedMethods())
@@ -48,6 +53,7 @@ app
     .use(joinRouter.allowedMethods())
     .use(reportRouter.routes())
     .use(reportRouter.allowedMethods());
+    
 //handle
 const eraseDatabaseOnSync = false;
 sequelize.sync({force: eraseDatabaseOnSync}).then(async () => {

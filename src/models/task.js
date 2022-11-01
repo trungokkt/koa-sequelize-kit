@@ -27,6 +27,10 @@ const TaskModel = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: true
         },
+        attached_files:{
+            type: DataTypes.ARRAY(DataTypes.TEXT),
+            allowNull: true
+        },
         createdAt: {
             type: DataTypes.DATE,
             defaultValue: new Date()

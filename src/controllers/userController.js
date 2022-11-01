@@ -61,12 +61,22 @@ const loginUser = async (ctx, next) => {
         ctx.throw(error.code, error.message);
     }
 }
-
+const uploadAvatar = async (ctx, next) => {
+    let data = {
+        id: ctx.user.id,
+        avatar: ctx.request.file.filename
+    }
+    userService.updateUser(data)
+    ctx.body = {
+        ...ctx.request.file
+    };
+}
 export {
     getAllUser,
     getDetailUser,
     createUser,
     updateUser,
     deleteUser,
-    loginUser
+    loginUser,
+    uploadAvatar
 }

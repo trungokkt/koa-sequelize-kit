@@ -1,8 +1,11 @@
 import Router from 'koa-router';
-import auth from '../middleware/auth';
 const router = Router({ prefix: '/users' })
+
+import auth from '../middleware/auth';
 import { validatorRouter } from '../middleware/validatorRouter';
 import * as userController from "../controllers/userController"
+
+import {uploadOnlyImage} from "../middleware/upload-multer"
 
 router
     .get("/",
@@ -44,5 +47,10 @@ router
             password: { type: "string" },
         }, "body"),
         userController.loginUser
-    );
+    )
+    .post('/upload-avatar-file',
+        auth,
+        uploadOnlyImage.single('avatar'),
+        userController.uploadAvatar
+    )
 export default router
