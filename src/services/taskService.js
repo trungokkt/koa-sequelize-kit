@@ -1,10 +1,11 @@
-import models from '../models';
+import models from '@babel-models';
 let Task = models.Task;
 let Todo = models.Todo;
+let MediaFile = models.MediaFile;
 
 let service = {};
 service.getAll = async ({ offset = 0, limit = 10, sort, directions = "DESC" }) => {
-    let options = { offset: offset, limit: limit }
+    let options = { offset: offset, limit: limit, include:[{model: MediaFile , attributes: ["filename","path"]}]}
     //check input
     if (sort) {
         options.order = [[sort, directions]]
@@ -31,9 +32,9 @@ service.getById = async (id) => {
         console.log(error)
     }
 };
-service.createTask = async (name, description, attached_files) => {
+service.createTask = async (name, description, user_id) => {
     try {
-        const task = await Task.create({ name: name, description: description, attached_files: attached_files });
+        const task = await Task.create({ name: name, description: description ,createBy:user_id});
         return task;
     } catch (error) {
         console.log(error)

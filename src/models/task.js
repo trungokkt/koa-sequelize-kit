@@ -27,10 +27,6 @@ const TaskModel = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: true
         },
-        attached_files:{
-            type: DataTypes.ARRAY(DataTypes.TEXT),
-            allowNull: true
-        },
         createdAt: {
             type: DataTypes.DATE,
             defaultValue: new Date()
@@ -44,6 +40,8 @@ const TaskModel = (sequelize, DataTypes) => {
     Task.associate = (models) => {
         Task.hasMany(models.Todo, { foreignKey: { name: "task_id", allowNull: false }, onDelete: "RESTRICT" });
         Task.hasMany(models.JoinTask, { foreignKey: { name: "task_id", allowNull: false }, onDelete: "RESTRICT" });
+        Task.hasMany(models.MediaFile, { foreignKey: { name: "task_id", allowNull: true }, onDelete: "RESTRICT" });
+        Task.hasMany(models.LineList, { foreignKey: { name: "task_id", allowNull: false }, onDelete: "RESTRICT" })
     }
     return Task
 }

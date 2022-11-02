@@ -1,7 +1,7 @@
 import Router from "koa-router";
-import auth from "../middleware/auth";
+import auth from "@babel-middleware/auth";
 const router = new Router({ prefix: "/download" });
-import { generateTask, generateTodoOfUser ,generateReport} from "../services/xlsxService"
+import { generateTask, generateTodoOfUser ,generateReport} from "@babel-services/xlsxService"
 
 
 router.post("/tasks", auth, async (ctx) => {

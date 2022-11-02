@@ -1,11 +1,11 @@
 import Router from 'koa-router';
 const router = Router({ prefix: '/users' })
 
-import auth from '../middleware/auth';
-import { validatorRouter } from '../middleware/validatorRouter';
-import * as userController from "../controllers/userController"
+import auth from '@babel-middleware/auth';
+import { validatorRouter } from '@babel-middleware/validatorRouter';
+import * as userController from "@babel-controllers/userController"
 
-import {uploadOnlyImage} from "../middleware/upload-multer"
+import {uploadOnlyImage} from "@babel-middleware/upload-multer"
 
 router
     .get("/",

@@ -1,6 +1,8 @@
-import models from '../models';
+import models from '@babel-models';
 import { generateJwt } from './jwtService'
 let User = models.User;
+let MediaFile = models.MediaFile;
+
 let service = {};
 
 service.getAll = async ({ offset = 0, limit = 10, sort, directions = "DESC" }) => {
@@ -21,7 +23,12 @@ service.getAll = async ({ offset = 0, limit = 10, sort, directions = "DESC" }) =
 };
 service.getByPK = async (id) => {
     try {
-        const users = await User.findByPk(id);
+        const users = await User.findOne({
+            where :{
+                 id:id
+            },
+            include:[{model: MediaFile, attributes: ["filename","path"]}]
+        });
         return users;
     } catch (error) {
         console.log(error)

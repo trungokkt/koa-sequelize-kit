@@ -1,4 +1,4 @@
-import { verifyJwt } from "../services/jwtService";
+import { verifyJwt } from "@babel-services/jwtService";
 const auth = async (ctx, next) => {
     if(!ctx.headers.authorization) throw new Error("authorization false. please check authorization")
     const token = ctx.headers.authorization.replace("Bearer ","")

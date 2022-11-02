@@ -1,8 +1,8 @@
 import Router from 'koa-router';
 const router = Router({ prefix: '/join' })
-import * as joinController from "../controllers/joinController"
-import auth from '../middleware/auth';
-import { validatorRouter } from "../middleware/validatorRouter"
+import * as joinController from "@babel-controllers/joinController"
+import auth from '@babel-middleware/auth';
+import { validatorRouter } from "@babel-middleware/validatorRouter"
 router
     .post("/",
         auth,

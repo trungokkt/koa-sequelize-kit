@@ -10,7 +10,13 @@
       ["@babel/plugin-transform-runtime"],
       ["module-resolver",{
         "alias":{
-          "@babel-src":"./src"
+          "@babel-src":"./src",
+          "@babel-controllers":"./src/controllers",
+          "@babel-middleware":"./src/middleware",
+          "@babel-models":"./src/models",
+          "@babel-services":"./src/services",
+          "@babel-routing":"./src/routing",
+          "@babel-template":"./src/template"
         }
       }]
     ]

@@ -1,8 +1,8 @@
 import Router from 'koa-router';
 const router = Router({ prefix: '/todos' })
-import { validatorRouter } from '../middleware/validatorRouter';
-import * as todoController from '../controllers/todoController'
-import auth from "../middleware/auth"
+import { validatorRouter } from '@babel-middleware/validatorRouter';
+import * as todoController from '@babel-controllers/todoController'
+import auth from "@babel-middleware/auth"
 router
     .get("/",
         auth,

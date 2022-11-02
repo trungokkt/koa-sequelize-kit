@@ -1,4 +1,4 @@
-import todoService from "../services/todosService"
+import todoService from "@babel-services/todosService"
 
 const getAllTodoUserJoined = async (ctx, next) => {
     try {

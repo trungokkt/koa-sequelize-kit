@@ -1,4 +1,4 @@
-import models from '../models';
+import models from '@babel-models';
 let Todo = models.Todo;
 let Task = models.Task;
 let User = models.User

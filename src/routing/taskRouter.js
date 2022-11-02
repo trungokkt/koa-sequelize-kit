@@ -1,8 +1,9 @@
 import Router from 'koa-router';
 const router = Router({ prefix: '/tasks' })
-import { validatorRouter } from '../middleware/validatorRouter';
-import * as taskController from '../controllers/taskController'
-import { uploadAllFile } from '../middleware/upload-multer'
+import { validatorRouter } from '@babel-middleware/validatorRouter';
+import * as taskController from '@babel-controllers/taskController'
+import { uploadAllFile } from '@babel-middleware/upload-multer'
+import auth from "@babel-middleware/auth"
 router
     .get("/",
         validatorRouter({
@@ -15,6 +16,7 @@ router
     )
     .get("/:id", taskController.getDetailTask)
     .post("/",
+        auth,
         uploadAllFile.array("attached_files"),
         validatorRouter({
             name: { type: "string" },

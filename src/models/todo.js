@@ -38,6 +38,7 @@ const TodoModel = (sequelize ,DataTypes) => {
     Todo.associate = (models) => {
         Todo.belongsTo(models.Task, { foreignKey: { name: "task_id"}, onDelete:"RESTRICT" });
         Todo.belongsTo(models.User, { foreignKey: { name: "user_id"}, onDelete:"RESTRICT" });
+        Todo.belongsTo(models.LineList, { foreignKey: { name: "line_list"}, onDelete:"RESTRICT" });
     }
     return Todo
 }

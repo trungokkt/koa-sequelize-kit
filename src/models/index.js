@@ -1,9 +1,11 @@
 import Sequelize from 'sequelize';
 
-import UserModel from './user';
-import TodoModel from './todo';
-import TaskModel from './task';
-import JoinTaskModel from './joinTask';
+import UserModel from '@babel-models/user';
+import TodoModel from '@babel-models/todo';
+import TaskModel from '@babel-models/task';
+import JoinTaskModel from '@babel-models/joinTask';
+import MediaFileModel from '@babel-models/mediafile';
+import LineListModel from '@babel-models/lineList';
 
 const sequelize = new Sequelize(
     process.env.DATABASE,
@@ -19,7 +21,9 @@ const models = {
     User: UserModel(sequelize, Sequelize),
     Todo: TodoModel(sequelize, Sequelize),
     Task: TaskModel(sequelize, Sequelize),
-    JoinTask: JoinTaskModel(sequelize, Sequelize)
+    JoinTask: JoinTaskModel(sequelize, Sequelize),
+    MediaFile: MediaFileModel(sequelize, Sequelize),
+    LineList: LineListModel(sequelize,Sequelize)
 };
 
 

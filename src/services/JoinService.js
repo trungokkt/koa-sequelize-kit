@@ -1,5 +1,5 @@
 let service = {};
-import models from '../models';
+import models from '@babel-models';
 let JoinTask = models.JoinTask;
 service.getAll = async ({ offset = 0, limit = 10, sort, directions = "DESC" }) => {
     let options = { offset: offset, limit: limit }

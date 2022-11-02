@@ -1,4 +1,4 @@
-import JoinService from "../services/JoinService"
+import JoinService from "@babel-services/JoinService"
 
 const createJoinTask = async (ctx, next) => {
     try {

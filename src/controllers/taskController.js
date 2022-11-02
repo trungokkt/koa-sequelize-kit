@@ -1,5 +1,5 @@
-import taskService from "../services/taskService"
-
+import taskService from "@babel-services/taskService"
+import mediaService from '@babel-services/mediaService'
 const getAllTask = async (ctx, next) => {
     try {
         const options = ctx.request.query
@@ -21,8 +21,12 @@ const getDetailTask = async (ctx, next) => {
 const createTask = async (ctx, next) => {
     try {
         const { name, description } = ctx.request.body
-        let attached_files = ctx.files.map(file => file.filename)
-        const task = await taskService.createTask(name, description, attached_files)
+        const task = await taskService.createTask(name, description)
+        let files = ctx.files
+        for(let i = 0 ; i < files.length ; i++){
+            files[i].task_id = task.id
+        }
+        const medias = await mediaService.createMediaFiles(files)
         ctx.body = task
     } catch (error) {
         ctx.throw(error.code, error.message);

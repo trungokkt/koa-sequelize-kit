@@ -1,5 +1,5 @@
-import userService from "../services/userServices"
-
+import userService from "@babel-services/userServices"
+import mediaService from "@babel-services/mediaService"
 const getAllUser = async (ctx, next) => {
     try {
         //const { offset, limit , sort, directions} = ctx.request.query
@@ -62,13 +62,15 @@ const loginUser = async (ctx, next) => {
     }
 }
 const uploadAvatar = async (ctx, next) => {
+    const media = await mediaService.createAvatar(ctx.request.file,ctx.user.id)
     let data = {
         id: ctx.user.id,
-        avatar: ctx.request.file.filename
+        avatar: media.id
     }
-    userService.updateUser(data)
+    const user = await userService.updateUser(data)
     ctx.body = {
-        ...ctx.request.file
+        user,
+        media
     };
 }
 export {

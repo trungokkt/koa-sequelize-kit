@@ -7,13 +7,13 @@ import logger from "koa-logger"
 import serve from "koa-static"
 
 //import router
-import userRouter from "./routing/userRouter"
-import todoRouter from "./routing/todoRouter"
-import taskRouter from "./routing/taskRouter"
-import joinRouter from "./routing/joinRouter"
-import reportRouter from "./routing/reportRouter"
+import userRouter from "@babel-routing/userRouter"
+import todoRouter from "@babel-routing/todoRouter"
+import taskRouter from "@babel-routing/taskRouter"
+import joinRouter from "@babel-routing/joinRouter"
+import reportRouter from "@babel-routing/reportRouter"
 
-import { sequelize } from "./models"
+import { sequelize } from "@babel-models"
 
 
 //start app
