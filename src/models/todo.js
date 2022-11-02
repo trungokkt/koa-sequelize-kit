@@ -1,4 +1,4 @@
-const TodoModel = (sequelize ,DataTypes) => {
+const TodoModel = (sequelize, DataTypes) => {
     const Todo = sequelize.define("todo", {
         name: {
             type: DataTypes.STRING,
@@ -10,35 +10,25 @@ const TodoModel = (sequelize ,DataTypes) => {
         },
         completed: {
             type: DataTypes.BOOLEAN,
-            allowNull: false,
             defaultValue: false
         },
         completeDate: {
             type: DataTypes.DATE,
             allowNull: true,
         },
-        createdAt:{ 
+        createdAt: {
             type: DataTypes.DATE,
             defaultValue: new Date()
-         },
-        updatedAt: { 
+        },
+        updatedAt: {
             type: DataTypes.DATE,
-         },
-         user_id:{
-            type: DataTypes.INTEGER,
-            allowNull: true,
-         },
-         task_id:{
-            type: DataTypes.INTEGER,
-            allowNull: false,
-         }
-    },{
+        }
+    }, {
         tableName: 'todos',
     })
     Todo.associate = (models) => {
-        Todo.belongsTo(models.Task, { foreignKey: { name: "task_id"}, onDelete:"RESTRICT" });
-        Todo.belongsTo(models.User, { foreignKey: { name: "user_id"}, onDelete:"RESTRICT" });
-        Todo.belongsTo(models.LineList, { foreignKey: { name: "line_list"}, onDelete:"RESTRICT" });
+        Todo.belongsTo(models.User, { foreignKey: { name: "user_id", allowNull: true, }, onDelete: "RESTRICT" });
+        Todo.belongsTo(models.Category, { foreignKey: { name: "category_id" }, onDelete: "RESTRICT" });
     }
     return Todo
 }

@@ -18,7 +18,6 @@ router
     .get("/:id", auth, todoController.getDetailTodo)
     .post("/",
         validatorRouter({
-            task_id: { type: "int", convertType: "int" },
             name: { type: "string" },
             description: { type: "string", required: false },
         }, "body"),

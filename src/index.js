@@ -12,14 +12,18 @@ import todoRouter from "@babel-routing/todoRouter"
 import taskRouter from "@babel-routing/taskRouter"
 import joinRouter from "@babel-routing/joinRouter"
 import reportRouter from "@babel-routing/reportRouter"
+import categoryRouter from "@babel-routing/categoryRouter"
 
 import { sequelize } from "@babel-models"
 
+const path = require('path');
 
+const staticDirPath = path.join(__dirname, 'public');
+console.log(staticDirPath)
 //start app
 const app = new Koa();
 
-app.use(serve('public'));
+app.use(serve(staticDirPath));
 
 // logger
 app.use(logger())
@@ -54,7 +58,9 @@ app
     .use(joinRouter.routes())
     .use(joinRouter.allowedMethods())
     .use(reportRouter.routes())
-    .use(reportRouter.allowedMethods());
+    .use(reportRouter.allowedMethods())
+    .use(categoryRouter.routes())
+    .use(categoryRouter.allowedMethods());
 
 //handle
 const eraseDatabaseOnSync = false;

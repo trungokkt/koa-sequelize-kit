@@ -1,5 +1,10 @@
 const TaskModel = (sequelize, DataTypes) => {
     const Task = sequelize.define("task", {
+        id:{
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+        },
         name: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -38,10 +43,9 @@ const TaskModel = (sequelize, DataTypes) => {
         tableName: 'tasks'
     })
     Task.associate = (models) => {
-        Task.hasMany(models.Todo, { foreignKey: { name: "task_id", allowNull: false }, onDelete: "RESTRICT" });
         Task.hasMany(models.JoinTask, { foreignKey: { name: "task_id", allowNull: false }, onDelete: "RESTRICT" });
         Task.hasMany(models.MediaFile, { foreignKey: { name: "task_id", allowNull: true }, onDelete: "RESTRICT" });
-        Task.hasMany(models.LineList, { foreignKey: { name: "task_id", allowNull: false }, onDelete: "RESTRICT" })
+        Task.hasMany(models.Category, { foreignKey: { name: "task_id", allowNull: false }, onDelete: "RESTRICT" })
     }
     return Task
 }

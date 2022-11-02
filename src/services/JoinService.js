@@ -11,7 +11,7 @@ service.getAll = async ({ offset = 0, limit = 10, sort, directions = "DESC" }) =
     try {
         joins = await JoinTask.findAll(options);
     } catch (error) {
-        console.log(error)
+        throw error
     }
 
     return joins;
@@ -21,7 +21,7 @@ service.createJoinTask = async ({ user_id, task_id }) => {
         const create = await JoinTask.create({ user_id: user_id, task_id: task_id });
         return create;
     } catch (error) {
-        console.log(error)
+        throw error
     }
 };
 service.updateJoinTask = async ({ user_id, task_id, status }) => {
@@ -34,7 +34,7 @@ service.updateJoinTask = async ({ user_id, task_id, status }) => {
             }
         });
     } catch (error) {
-        console.log(error)
+        throw error
     }
     if (!join) {
         let error = new Error("update: user don't join this task")
@@ -55,7 +55,7 @@ service.deleteJoinTask = async ({ user_id, task_id }) => {
             }
         });
     } catch (error) {
-        console.log(error)
+        throw error
     }
     if (!join) {
         let error = new Error("delete: user don't join this task")

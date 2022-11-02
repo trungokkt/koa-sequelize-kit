@@ -5,7 +5,7 @@ import TodoModel from '@babel-models/todo';
 import TaskModel from '@babel-models/task';
 import JoinTaskModel from '@babel-models/joinTask';
 import MediaFileModel from '@babel-models/mediafile';
-import LineListModel from '@babel-models/lineList';
+import CategoryModel from '@babel-models/category';
 
 const sequelize = new Sequelize(
     process.env.DATABASE,
@@ -23,12 +23,13 @@ const models = {
     Task: TaskModel(sequelize, Sequelize),
     JoinTask: JoinTaskModel(sequelize, Sequelize),
     MediaFile: MediaFileModel(sequelize, Sequelize),
-    LineList: LineListModel(sequelize,Sequelize)
+    Category: CategoryModel(sequelize,Sequelize)
 };
 
 
 models.Todo.afterCreate(async (todo, options) => {
-    let task = await models.Task.findByPk(todo.task_id)
+    let category = await models.Category.findByPk(todo.category_id)
+    let task = await models.Task.findByPk(category.task_id)
     await task.increment('total_todo');
 });
 models.Todo.beforeUpdate((todo, options) => {
@@ -37,7 +38,8 @@ models.Todo.beforeUpdate((todo, options) => {
     }
 })
 models.Todo.afterUpdate(async (todo, options) => {
-    let task = await models.Task.findByPk(todo.task_id)
+    let category = await models.Category.findByPk(todo.category_id)
+    let task = await models.Task.findByPk(category.task_id)
     let countTodoCompleted = await models.Todo.count({
         where: { completed: true },
       })
@@ -49,7 +51,8 @@ models.Todo.afterUpdate(async (todo, options) => {
     await task.save()
 })
 models.Todo.afterDestroy(async (todo, options) => {
-    let task = await models.Task.findByPk(todo.task_id)
+    let category = await models.Category.findByPk(todo.category_id)
+    let task = await models.Task.findByPk(category.task_id)
     task.total_todo--
     if (todo.completed === true) {
         task.total_todo_completed--

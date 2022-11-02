@@ -2,6 +2,8 @@ import models from '@babel-models';
 let Todo = models.Todo;
 let Task = models.Task;
 let User = models.User
+let LineList = models.LineList
+
 let service = {};
 service.getAll = async ({ task_id, user_id, offset = 0, limit = 10, sort, directions = "DESC", extend = false }) => {
     let options = {
@@ -10,18 +12,20 @@ service.getAll = async ({ task_id, user_id, offset = 0, limit = 10, sort, direct
     if (extend === true) {
         options.include = [
             {
-                model: Task,
-                attributes: ["name", "status", "createdAt"]
+                model: LineList,
+                attributes: ["task_id"],
+                where: task_id ? {
+                    task_id: task_id
+                } : {}
             },
             {
                 model: User,
                 attributes: ["name", "username"]
             }
         ]
+
     }
-    if (task_id) {
-        options.where.task_id = task_id
-    }
+
     if (user_id) {
         options.where.user_id = user_id
     }
@@ -36,11 +40,12 @@ service.getAll = async ({ task_id, user_id, offset = 0, limit = 10, sort, direct
     }
     let todos
     try {
-        todos = await Todo.findAll(options);
+        todos = await Todo.findAll();
+        return todos;
     } catch (error) {
         console.log(error)
     }
-    return todos;
+    
 };
 service.getById = async (id) => {
     try {
@@ -55,16 +60,18 @@ service.getById = async (id) => {
         console.log(error)
     }
 };
-service.createTodo = async ({ task_id, name, description }) => {
+service.createTodo = async ({ name, description, category_id, user_id}) => {
     try {
-        const todo = await Todo.create({ task_id: task_id, name: name, description: description });
+
+        const todo = await Todo.create({ name, description, category_id, user_id });
+        console.log(todo)
         return todo;
     } catch (error) {
+        console.log(error)
         throw error
     }
-
 };
-service.updateTodo = async ({ id, name, description, completed, user_id }) => {
+service.updateTodo = async ({ id, name, description, completed, user_id, category_id }) => {
     let todo
     try {
         todo = await Todo.findByPk(id);
@@ -87,9 +94,10 @@ service.updateTodo = async ({ id, name, description, completed, user_id }) => {
         todo.description = description
     }
     if (completed !== undefined) {
-
         todo.completed = completed
-
+    }
+    if (category_id) {
+        todo.category_id = category_id
     }
     todo = await todo.save();
     return todo;

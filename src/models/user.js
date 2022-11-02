@@ -37,7 +37,7 @@ const UserModel = (sequelize, DataTypes) => {
         }
     })
     User.associate = (models) => {
-        User.hasMany(models.Todo, { foreignKey: { name: "user_id", allowNull: false }, onDelete: "RESTRICT" });
+        User.hasMany(models.Todo, { foreignKey: { name: "user_id", allowNull: true }, onDelete: "RESTRICT" });
         User.hasMany(models.JoinTask, { foreignKey: { name: "user_id", allowNull: false }, onDelete: "RESTRICT" });
         User.belongsTo(models.MediaFile, { foreignKey: { name: "avatar", allowNull: true },onDelete: "RESTRICT" });
 

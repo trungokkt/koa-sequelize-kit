@@ -26,7 +26,6 @@ const createTodo = async (ctx, next) => {
     } catch (error) {
         ctx.throw(error.code, error.message);
     }
-
 }
 const updateTodo = async (ctx, next) => {
     try {
@@ -60,7 +59,6 @@ const JoinTodo = async (ctx, next) => {
     }
 
 }
-
 export {
     getAllTodoUserJoined,
     getDetailTodo,
