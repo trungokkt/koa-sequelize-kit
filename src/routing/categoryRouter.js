@@ -1,7 +1,6 @@
 import Router from 'koa-router';
 const router = Router({ prefix: '/list' })
 import { validatorRouter } from '@babel-middleware/validatorRouter';
-import * as taskController from '@babel-controllers/taskController'
 import * as categoryController from '@babel-controllers/categoryController'
 
 import auth from "@babel-middleware/auth"

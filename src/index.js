@@ -16,11 +16,11 @@ import categoryRouter from "@babel-routing/categoryRouter"
 
 import { sequelize } from "@babel-models"
 
+
 const path = require('path');
 
 const staticDirPath = path.join(__dirname, 'public');
-console.log(staticDirPath)
-//start app
+
 const app = new Koa();
 
 app.use(serve(staticDirPath));
@@ -47,6 +47,7 @@ app.use(async (ctx, next) => {
 })
 
 //
+
 
 app
     .use(userRouter.routes())

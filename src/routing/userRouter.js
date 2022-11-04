@@ -4,8 +4,7 @@ const router = Router({ prefix: '/users' })
 import auth from '@babel-middleware/auth';
 import { validatorRouter } from '@babel-middleware/validatorRouter';
 import * as userController from "@babel-controllers/userController"
-
-import {uploadOnlyImage} from "@babel-middleware/upload-multer"
+import { uploadOnlyImage } from "@babel-middleware/upload-multer"
 
 router
     .get("/",
