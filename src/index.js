@@ -35,26 +35,20 @@ app.use(bodyParser());
 
 //middelware error handle
 app.use(async (ctx, next) => {
-        try {
-            await next();
-        } catch (err) {
-            // will only respond with JSON
-            console.log(err)
-            ctx.status = err.statusCode || err.status || 500;
-            ctx.body = {
-                statusCode: err.statusCode || err.status || 500,
-                message: err.message
-            };
-        }
-    })
+    try {
+        await next();
+    } catch (err) {
+        // will only respond with JSON
+        console.log(err)
+        ctx.status = err.statusCode || err.status || 500;
+        ctx.body = {
+            statusCode: err.statusCode || err.status || 500,
+            message: err.message
+        };
+    }
+})
 
-    //
-    <<
-    << << < HEAD ===
-    === =
-
-    >>>
-    >>> > parent of 36 db0cf(ap dung queue va cron)
+//
 app
     .use(userRouter.routes())
     .use(userRouter.allowedMethods())

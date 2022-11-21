@@ -3,7 +3,7 @@ import mediaService from "@babel-services/mediaService"
 import {
     queueUploadAvatar
 } from "../queue/queue"
-const getAllUser = async (ctx, next) => {
+const getAllUser = async (ctx) => {
     try {
         const options = ctx.request.query
         const users = await userService.getAll(options)
@@ -52,58 +52,40 @@ const deleteUser = async (ctx) => {
     }
 }
 const loginUser = async (ctx) => {
-        try {
-            const req_user = ctx.request.body
-            // if (!name) {
-            //     ctx.status = 400
-            //     throw new Error("name cannot be null")
-            // }
-            const token = await userService.Login(req_user)
-            ctx.body = {
-                token
-            }
-        } catch (error) {
-            ctx.throw(error.code, error.message);
+    try {
+        const req_user = ctx.request.body
+        // if (!name) {
+        //     ctx.status = 400
+        //     throw new Error("name cannot be null")
+        // }
+        const token = await userService.Login(req_user)
+        ctx.body = {
+            token
         }
-    } <<
-    <<
-    << < HEAD
+    } catch (error) {
+        ctx.throw(error.code, error.message);
+    }
+}
 const uploadAvatar = async (ctx) => {
-            const job = await queueUploadAvatar(ctx.request.file, ctx.user.id)
-            ctx.body = job
-                // const media = await mediaService.createAvatar(ctx.request.file,ctx.user.id)
-                // let data = {
-                //     id: ctx.user.id,
-                //     avatar: media.id
-                // }
-                // const user = await userService.updateUser(data)
-                // ctx.body = {
-                //     user,
-                //     media
-                // };
-                ===
-                ===
-                =
-                const uploadAvatar = async (ctx, next) => {
-                    const media = await mediaService.createAvatar(ctx.request.file, ctx.user.id)
-                    let data = {
-                        id: ctx.user.id,
-                        avatar: media.id
-                    }
-                    const user = await userService.updateUser(data)
-                    ctx.body = {
-                        user,
-                        media
-                    }; >>>
-                    >>>
-                    > parent of 36 db0cf(ap dung queue va cron)
-                }
-            export {
-                getAllUser,
-                getDetailUser,
-                createUser,
-                updateUser,
-                deleteUser,
-                loginUser,
-                uploadAvatar
-            }
+    const job = await queueUploadAvatar(ctx.request.file, ctx.user.id)
+    ctx.body = job
+    // const media = await mediaService.createAvatar(ctx.request.file,ctx.user.id)
+    // let data = {
+    //     id: ctx.user.id,
+    //     avatar: media.id
+    // }
+    // const user = await userService.updateUser(data)
+    // ctx.body = {
+    //     user,
+    //     media
+    // };
+}
+export {
+    getAllUser,
+    getDetailUser,
+    createUser,
+    updateUser,
+    deleteUser,
+    loginUser,
+    uploadAvatar
+}
