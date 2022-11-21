@@ -6,6 +6,7 @@ import TaskModel from '@babel-models/task';
 import JoinTaskModel from '@babel-models/joinTask';
 import MediaFileModel from '@babel-models/mediafile';
 import CategoryModel from '@babel-models/category';
+
 const sequelize = new Sequelize(
     process.env.DATABASE,
     process.env.DATABASE_USER,
