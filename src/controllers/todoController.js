@@ -1,6 +1,6 @@
 import todoService from "@babel-services/todosService"
 
-const getAllTodoUserJoined = async (ctx, next) => {
+const getAllTodoUserJoined = async (ctx) => {
     try {
         const options = ctx.request.query
         const todos = await todoService.getAll(options)
@@ -9,7 +9,7 @@ const getAllTodoUserJoined = async (ctx, next) => {
         ctx.throw(error.code, error.message);
     }
 }
-const getDetailTodo = async (ctx, next) => {
+const getDetailTodo = async (ctx) => {
     try {
         const todo = await todoService.getById(ctx.params.id)
         ctx.body = todo
@@ -18,7 +18,7 @@ const getDetailTodo = async (ctx, next) => {
     }
 
 }
-const createTodo = async (ctx, next) => {
+const createTodo = async (ctx) => {
     try {
         const data = ctx.request.body
         const todo = await todoService.createTodo(data)
@@ -27,7 +27,7 @@ const createTodo = async (ctx, next) => {
         ctx.throw(error.code, error.message);
     }
 }
-const updateTodo = async (ctx, next) => {
+const updateTodo = async (ctx) => {
     try {
         const data = ctx.request.body
         data.user_id = ctx.user.id
@@ -38,7 +38,7 @@ const updateTodo = async (ctx, next) => {
     }
 
 }
-const deleteTodo = async (ctx, next) => {
+const deleteTodo = async (ctx) => {
     try {
         const id = ctx.params.id
         const todo = await todoService.deleteTodo(id)
@@ -48,7 +48,7 @@ const deleteTodo = async (ctx, next) => {
     }
 
 }
-const JoinTodo = async (ctx, next) => {
+const JoinTodo = async (ctx) => {
     try {
         const todo_id = ctx.request.body.todo_id
         const user_id = ctx.user.id

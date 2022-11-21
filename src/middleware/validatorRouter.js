@@ -1,6 +1,6 @@
 
 import Parameter from "parameter";
-var parameter = new Parameter();
+let parameter = new Parameter();
 
 const validatorRouter = (rule, type) => {
     return async (ctx, next) => {
@@ -16,7 +16,7 @@ const validatorRouter = (rule, type) => {
                 values = ctx.params
                 break;
         }
-        var errors = parameter.validate(rule, values);
+        let errors = parameter.validate(rule, values);
         if (errors) {
             ctx.status = 422;
             ctx.body = errors;

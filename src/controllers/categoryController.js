@@ -1,5 +1,5 @@
 import categoryService from '@babel-services/categoryService'
-const getAll = async (ctx, next) => {
+const getAll = async (ctx) => {
     try {
         const task_id = ctx.request.query.task_id
         const category = await categoryService.getAll(task_id)
@@ -8,7 +8,7 @@ const getAll = async (ctx, next) => {
         ctx.throw(error.code, error.message);
     }
 }
-const createList = async (ctx, next) => {
+const createList = async (ctx) => {
     try {
         const data = ctx.request.body
         const category = await categoryService.createList(data)
@@ -17,7 +17,7 @@ const createList = async (ctx, next) => {
         ctx.throw(error.code, error.message);
     }
 }
-const updateList = async (ctx, next) => {
+const updateList = async (ctx) => {
     try {
         const data = ctx.request.body
         const list_item = await categoryService.updateList(data)

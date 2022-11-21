@@ -47,8 +47,6 @@ app.use(async (ctx, next) => {
 })
 
 //
-
-
 app
     .use(userRouter.routes())
     .use(userRouter.allowedMethods())

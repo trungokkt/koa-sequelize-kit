@@ -1,6 +1,6 @@
 import JoinService from "@babel-services/JoinService"
 
-const createJoinTask = async (ctx, next) => {
+const createJoinTask = async (ctx) => {
     try {
         const user_id = ctx.user.id
         const task_id = ctx.request.body.task_id
@@ -10,7 +10,7 @@ const createJoinTask = async (ctx, next) => {
         ctx.throw(error.code, error.message);
     }
 }
-const updateJoinTask = async (ctx, next) => {
+const updateJoinTask = async (ctx) => {
     try {
         let data = ctx.request.body
         data.user_id = ctx.user.id
@@ -21,7 +21,7 @@ const updateJoinTask = async (ctx, next) => {
     }
 
 }
-const deleteJoinTask = async (ctx, next) => {
+const deleteJoinTask = async (ctx) => {
     try {
         const user_id = ctx.user.id
         const task_id = ctx.params.id

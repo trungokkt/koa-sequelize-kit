@@ -1,6 +1,6 @@
 import taskService from "@babel-services/taskService"
 import mediaService from '@babel-services/mediaService'
-const getAllTask = async (ctx, next) => {
+const getAllTask = async (ctx) => {
     try {
         const options = ctx.request.query
         const tasks = await taskService.getAll(options)
@@ -9,7 +9,7 @@ const getAllTask = async (ctx, next) => {
         ctx.throw(error.code, error.message);
     }
 }
-const getDetailTask = async (ctx, next) => {
+const getDetailTask = async (ctx) => {
     try {
         const task = await taskService.getById(ctx.params.id)
         ctx.body = task
@@ -18,13 +18,13 @@ const getDetailTask = async (ctx, next) => {
     }
 
 }
-const createTask = async (ctx, next) => {
+const createTask = async (ctx) => {
     try {
         const { name, description } = ctx.request.body
         const task = await taskService.createTask(name, description)
         let files = ctx.files
-        for(let i = 0 ; i < files.length ; i++){
-            files[i].task_id = task.id
+        for (const element of files) {
+            element.task_id = task.id
         }
         const medias = await mediaService.createMediaFiles(files)
         ctx.body = task
@@ -32,7 +32,7 @@ const createTask = async (ctx, next) => {
         ctx.throw(error.code, error.message);
     }
 }
-const updateTask = async (ctx, next) => {
+const updateTask = async (ctx) => {
     try {
         let data = ctx.request.body
         data.new_attached_files = ctx.files.map(file => file.filename)
@@ -42,7 +42,7 @@ const updateTask = async (ctx, next) => {
         ctx.throw(error.code, error.message);
     }
 }
-const deleteTask = async (ctx, next) => {
+const deleteTask = async (ctx) => {
     try {
         const id = ctx.params.id
         const task = await taskService.deleteTask(id)

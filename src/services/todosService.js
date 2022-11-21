@@ -1,24 +1,26 @@
 import models from '@babel-models';
+const { Op } = require("sequelize");
+
 let Todo = models.Todo;
 let Task = models.Task;
 let User = models.User
-let LineList = models.LineList
+let Category = models.Category
 
 let service = {};
-service.getAll = async ({ task_id, user_id, offset = 0, limit = 10, sort, directions = "DESC", extend = false }) => {
+service.getAll = async ({ task_id, user_id, completed, yesterday, offset = 0, limit = 10, sort, directions = "DESC", extend = false }) => {
     let options = {
         where: {}
     }
     if (extend === true) {
         options.include = [
             {
-                model: LineList,
+                model: Category,
                 attributes: ["task_id"],
                 where: task_id ? {
                     task_id: task_id
                 } : {}
             },
-            {
+            {   
                 model: User,
                 attributes: ["name", "username"]
             }
@@ -29,23 +31,33 @@ service.getAll = async ({ task_id, user_id, offset = 0, limit = 10, sort, direct
     if (user_id) {
         options.where.user_id = user_id
     }
+    if(completed){
+        options.where.completed = completed
+    }
+
+    const daysAgo = new Date(new Date().setDate(new Date().getDate() - 1));
+    if(yesterday){
+        options.where.completeDate = {
+            [Op.gt]: daysAgo,
+            [Op.lt]: new Date()
+          }
+    }
     if (limit !== 0) { //limit = 0  get all
         options.offset = offset
         options.limit = limit
     }
-
     //check input
     if (sort) {
         options.order = [[sort, directions]]
     }
     let todos
     try {
-        todos = await Todo.findAll();
+        todos = await Todo.findAll(options);
         return todos;
     } catch (error) {
         console.log(error)
     }
-    
+
 };
 service.getById = async (id) => {
     try {
@@ -60,7 +72,7 @@ service.getById = async (id) => {
         console.log(error)
     }
 };
-service.createTodo = async ({ name, description, category_id, user_id}) => {
+service.createTodo = async ({ name, description, category_id, user_id }) => {
     try {
 
         const todo = await Todo.create({ name, description, category_id, user_id });

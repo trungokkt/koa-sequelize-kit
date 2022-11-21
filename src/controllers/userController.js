@@ -1,9 +1,8 @@
 import userService from "@babel-services/userServices"
 import mediaService from "@babel-services/mediaService"
 import { queueUploadAvatar } from "../queue/queue"
-const getAllUser = async (ctx, next) => {
+const getAllUser = async (ctx) => {
     try {
-        //const { offset, limit , sort, directions} = ctx.request.query
         const options = ctx.request.query
         const users = await userService.getAll(options)
         ctx.body = users
@@ -11,7 +10,7 @@ const getAllUser = async (ctx, next) => {
         ctx.throw(error.code, error.message);
     }
 }
-const getDetailUser = async (ctx, next) => {
+const getDetailUser = async (ctx) => {
     try {
         const user = await userService.getByPK(ctx.user.id)
         ctx.body = user
@@ -19,7 +18,7 @@ const getDetailUser = async (ctx, next) => {
         ctx.throw(error.code, error.message);
     }
 }
-const createUser = async (ctx, next) => {
+const createUser = async (ctx) => {
     try {
         const req_user = ctx.request.body
         const user = await userService.createUser(req_user)
@@ -28,7 +27,7 @@ const createUser = async (ctx, next) => {
         ctx.throw(error.code, error.message);
     }
 }
-const updateUser = async (ctx, next) => {
+const updateUser = async (ctx) => {
     try {
         const id = ctx.user.id
         const name = ctx.request.body.name
@@ -38,7 +37,7 @@ const updateUser = async (ctx, next) => {
         ctx.throw(error.code, error.message);
     }
 }
-const deleteUser = async (ctx, next) => {
+const deleteUser = async (ctx) => {
     try {
         const id = ctx.user.id
         const user = await userService.deleteUser(id)
@@ -47,7 +46,7 @@ const deleteUser = async (ctx, next) => {
         ctx.throw(error.code, error.message);
     }
 }
-const loginUser = async (ctx, next) => {
+const loginUser = async (ctx) => {
     try {
         const req_user = ctx.request.body
         // if (!name) {
@@ -62,9 +61,8 @@ const loginUser = async (ctx, next) => {
         ctx.throw(error.code, error.message);
     }
 }
-const uploadAvatar = async (ctx, next) => {
+const uploadAvatar = async (ctx) => {
     const job = await queueUploadAvatar(ctx.request.file, ctx.user.id)
-
     ctx.body = job
     // const media = await mediaService.createAvatar(ctx.request.file,ctx.user.id)
     // let data = {
